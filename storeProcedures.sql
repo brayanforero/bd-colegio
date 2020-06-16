@@ -3,35 +3,30 @@ DROP PROCEDURE IF EXISTS sp_registrar_estudiante;
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_estudiante(
  
-	_cedula VARCHAR(15),_nombres VARCHAR(50), _apellidos VARCHAR(50), _naciemiento DATE, _genero VARCHAR(1),
+	_cedula VARCHAR(15),_nombres VARCHAR(50), _apellidos VARCHAR(50), _nacimiento DATE, _genero VARCHAR(1),
     _id_estado INT, _id_municipio INT, _id_parroquia INT,
-    _canaina BOOLEAN, _beca BOOLEAN, _des_salud VARCHAR(300), _des_recomendaciones VARCHAR(300),
-     _telefono_mama VARCHAR(20), _telefono_papa VARCHAR(20)
+    _canaina BOOLEAN, _beca BOOLEAN, _des_salud VARCHAR(300), _des_recomendaciones VARCHAR(300)
 )
 BEGIN
+
 	DECLARE id INT;
-	DECLARE EXIT HANDLER FOR SQLSTATE '45000' 
-    BEGIN
-		ROLLBACK;
-##	QUIERO OBTENER EL MENSAJE DEL ERROR DE 45000 QUE DEVUELVE EL TRIGGER,
-##  CUANDO EJECUTO ESTE PRODIMIENTO NO ME MUESTRA LA EXEPCION DEL TRIGGER
-    END;
+    
 	 START TRANSACTION;
 		INSERT INTO estudiantes
         (cedula,nombre_nombres,nombre_apellidos,fecha_nacimiento,genero,dir_estado,dir_municipio,dir_parroquia,posee_canaima,posee_beca,info_salud,recomendaciones)
 		VALUES
-        (_cedula,_nombres,_apellidos,_naciemiento,_genero,_id_estado,_id_municipio, _id_parroquia, _canaina, _beca, _des_salud,_des_recomendaciones);
+        (_cedula,_nombres,_apellidos,_nacimiento,_genero,_id_estado,_id_municipio, _id_parroquia, _canaina, _beca, _des_salud,_des_recomendaciones);
         
         SET id = (SELECT id_estudiante FROM estudiantes ORDER BY id_estudiante DESC LIMIT 1);
-        INSERT INTO telefonos_de_estudiantes (id_estudiante, telefono) 
-										VALUES(id, _telefono_mama),
-                                        (id, _telefono_papa);
 		SELECT id;
-	COMMIT;
+	
 END $$
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
+DELETE FROM telefono_estudiantes;
+
+call sp_registrar_estudiante('v-12347','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','');
 
 DELIMITER $$
 CREATE PROCEDURE sp_consulta_estudiante(_cedula VARCHAR(15))
