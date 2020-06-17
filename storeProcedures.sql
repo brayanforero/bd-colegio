@@ -13,7 +13,6 @@ BEGIN
 	DECLARE id INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: No se Pudo Insertar los Datos del Niño';
     ROLLBACK;
     END;
     
@@ -29,7 +28,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-call sp_registrar_estudiante('1234','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','','1234','4321');
+-- call sp_registrar_estudiante('1234','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','','1234','4321');
 
 DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
 DELIMITER $$

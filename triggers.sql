@@ -7,11 +7,11 @@ CREATE TRIGGER tg_estudiante_BI BEFORE INSERT ON estudiantes
         
         SET age_admited = get_age_now(NEW.fecha_nacimiento);
 		
-        IF age_admited > 12 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no Admitida para el Estudiante';
+        IF age_admited > 12 OR age_admited <3 THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no valida para el Niño(a).';
 		END IF;
         IF NEW.fecha_nacimiento = 0000-00-00 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Formato de Fecha Invalido';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Fecha de nacimiento no valida para el Niño(a).';
 		END IF;
         
         IF NEW.info_salud = '' THEN
@@ -22,7 +22,7 @@ CREATE TRIGGER tg_estudiante_BI BEFORE INSERT ON estudiantes
 			SET NEW.recomendaciones = 'SIN ESPEFICAR';
         END IF;
         IF NEW.cedula = '' THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Exiten Algunos Datos Ambiguos o Vacios';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cedula no valida para el Niño(a).';
         END IF;
     END $$
  DELIMITER ;
@@ -35,11 +35,11 @@ CREATE TRIGGER tg_estudiante_BU BEFORE UPDATE ON estudiantes
         
         SET age_admited = get_age_now(NEW.fecha_nacimiento);
 		
-        IF age_admited > 12 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no Admitida para el Estudiante';
+        IF age_admited > 12 OR age_admited < 3 THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no valida para el Niño(a).';
 		END IF;
         IF NEW.fecha_nacimiento = 0000-00-00 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Formato de Fecha Invalido';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Fecha de nacimiento no valida para el Niño(a).';
 		END IF;
         
         IF NEW.info_salud = '' THEN
@@ -48,49 +48,42 @@ CREATE TRIGGER tg_estudiante_BU BEFORE UPDATE ON estudiantes
         
         IF NEW.recomendaciones = '' THEN
 			SET NEW.recomendaciones = 'SIN ESPEFICAR';
+        END IF;
+        IF NEW.cedula = '' THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cedula no valida para el Niño(a).';
         END IF;
     END $$
  DELIMITER ;
  
-DROP TRIGGER IF EXISTS tg_estudiante_BU;
+-- #########ESTUDIANTES#################
+
+
+-- #########ESTUDIANTES - TELEFONOS#################
+
+DROP TRIGGER IF EXISTS tg_telefonos_BI;
 DELIMITER $$
-CREATE TRIGGER tg_estudiante_BU BEFORE UPDATE ON estudiantes 
+CREATE TRIGGER tg_telefonos_BI BEFORE INSERT ON telefonos_de_estudiantes 
 	FOR EACH ROW BEGIN
-        DECLARE age_admited SMALLINT;
         
-        SET age_admited = get_age_now(NEW.fecha_nacimiento);
-		
-        IF age_admited > 12 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no Admitida para el Estudiante';
-		END IF;
-        
-        IF NEW.fecha_nacimiento = 0000-00-00 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Formato de Fecha Invalido';
-		END IF;
-        
-        IF NEW.info_salud = '' THEN
-			SET NEW.info_salud = 'SIN ESPEFICAR';
-        END IF;
-        
-        IF NEW.recomendaciones = '' THEN
-			SET NEW.recomendaciones = 'SIN ESPEFICAR';
+        IF NEW.telefono = '' OR NEW.telefono < 11 THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Exiten ambigueadad en los números de Telefono';
         END IF;
     END $$
--- #########ESTUDIANTES#################
-DELIMITER ;
 
+-- #########ESTUDIANTES - TELEFONOS################# 
+DELIMITER ;
 
 -- #########FAMILIARES#################
 DROP TRIGGER IF EXISTS tg_familiares_BI;
 DELIMITER $$
-CREATE TRIGGER tg_familiares_BI BEFORE INSERT ON familiares 
+CREATE TRIGGER tg_familiares_BI BEFORE INSERT ON familiares
 	FOR EACH ROW BEGIN
     
 		DECLARE age_admited SMALLINT;
         SET age_admited = get_age_now(NEW.fecha_nacimiento);
         
         IF NEW.fecha_nacimiento = 0000-00-00 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Formato de Fecha Invalido.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Fecha de nacimiento no valida para el Representate.';
 		END IF;
         
         IF NEW.email = '' THEN
@@ -102,7 +95,7 @@ CREATE TRIGGER tg_familiares_BI BEFORE INSERT ON familiares
         END IF;
     
 		IF age_admited < 18 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no Admitida para el Representante.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no valida para el Representante.';
         END IF;
     
     END $$ 
@@ -117,7 +110,7 @@ CREATE TRIGGER tg_familiares_BU BEFORE UPDATE ON familiares
         SET age_admited = get_age_now(NEW.fecha_nacimiento);
         
         IF NEW.fecha_nacimiento = 0000-00-00 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Formato de Fecha Invalido.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Fecha de nacimiento no valida para el Representate.';
 		END IF;
         
         IF NEW.email = '' THEN
@@ -129,7 +122,7 @@ CREATE TRIGGER tg_familiares_BU BEFORE UPDATE ON familiares
         END IF;
     
 		IF age_admited < 18 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no Admitida para el Representante.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Edad no valida para el Representante.';
         END IF;
     
     END $$ 
@@ -170,15 +163,15 @@ FOR EACH ROW BEGIN
 	END IF;
     
     IF (NEW.inicio > NEW.cierre) THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe Incongruencia en las Fechas.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe incongruencia en las Fechas.';
 	END IF;
     
     IF (NEW.inicio = NEW.cierre) THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe Incongruencia en las Fechas.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe incongruencia en las Fechas.';
 	END IF;
     
     IF chequeo_vigencia() THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe un Periodo en Vigencia.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe un periodo en Vigencia.';
 	END IF;
 END $$
 DELIMITER ;
@@ -228,11 +221,11 @@ CREATE TRIGGER tg_grados_BI BEFORE INSERT ON grados
 FOR EACH ROW BEGIN
 	
     IF NEW.nivel = '' THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Nivel Academico no permitido';
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Nivel Academico no valido';
     END IF;
     
-    IF NEW.nivel = '' THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Turno Academico no permitido';
+    IF NEW.turno = '' THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Turno Academico no valido';
     END IF;
 END$$
 DELIMITER ;
@@ -243,11 +236,11 @@ CREATE TRIGGER tg_grados_BU BEFORE UPDATE ON grados
 FOR EACH ROW BEGIN
 	
     IF NEW.nivel = '' THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Nivel Academico no permitido';
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Nivel Academico no valido';
     END IF;
     
-    IF NEW.nivel = '' THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Turno Academico no permitido';
+    IF NEW.turno = '' THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Turno Academico no valido';
     END IF;
 END$$
 -- #########GRADOS#################
