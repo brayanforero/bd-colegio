@@ -11,23 +11,18 @@ BEGIN
 
 	DECLARE id INT;
     
-	 START TRANSACTION;
 		INSERT INTO estudiantes
         (cedula,nombre_nombres,nombre_apellidos,fecha_nacimiento,genero,dir_estado,dir_municipio,dir_parroquia,posee_canaima,posee_beca,info_salud,recomendaciones)
 		VALUES
         (_cedula,_nombres,_apellidos,_nacimiento,_genero,_id_estado,_id_municipio, _id_parroquia, _canaina, _beca, _des_salud,_des_recomendaciones);
-        
         SET id = (SELECT id_estudiante FROM estudiantes ORDER BY id_estudiante DESC LIMIT 1);
-		SELECT id;
-	
+        SELECT id;
 END $$
 DELIMITER ;
 
+-- call sp_registrar_estudiante('v-12345','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','');
+
 DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
-DELETE FROM telefono_estudiantes;
-
-call sp_registrar_estudiante('v-12347','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','');
-
 DELIMITER $$
 CREATE PROCEDURE sp_consulta_estudiante(_cedula VARCHAR(15))
 BEGIN
