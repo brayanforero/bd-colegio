@@ -5,22 +5,31 @@ CREATE PROCEDURE sp_registrar_estudiante(
  
 	_cedula VARCHAR(15),_nombres VARCHAR(50), _apellidos VARCHAR(50), _nacimiento DATE, _genero VARCHAR(1),
     _id_estado INT, _id_municipio INT, _id_parroquia INT,
-    _canaina BOOLEAN, _beca BOOLEAN, _des_salud VARCHAR(300), _des_recomendaciones VARCHAR(300)
+    _canaina BOOLEAN, _beca BOOLEAN, _des_salud VARCHAR(300), _des_recomendaciones VARCHAR(300),
+    _momPhone VARCHAR(20), _dadPhone VARCHAR(20)
 )
 BEGIN
 
 	DECLARE id INT;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: No se Pudo Insertar los Datos del Niño';
+    ROLLBACK;
+    END;
     
+    START TRANSACTION;
 		INSERT INTO estudiantes
         (cedula,nombre_nombres,nombre_apellidos,fecha_nacimiento,genero,dir_estado,dir_municipio,dir_parroquia,posee_canaima,posee_beca,info_salud,recomendaciones)
 		VALUES
         (_cedula,_nombres,_apellidos,_nacimiento,_genero,_id_estado,_id_municipio, _id_parroquia, _canaina, _beca, _des_salud,_des_recomendaciones);
         SET id = (SELECT id_estudiante FROM estudiantes ORDER BY id_estudiante DESC LIMIT 1);
+        INSERT INTO telefonos_de_estudiantes (id_estudiante, telefono) VALUE (id, _momPhone),(id, _dadPhone);
         SELECT id;
+	COMMIT;
 END $$
 DELIMITER ;
 
--- call sp_registrar_estudiante('v-12345','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','');
+call sp_registrar_estudiante('1234','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','','1234','4321');
 
 DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
 DELIMITER $$

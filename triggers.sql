@@ -21,6 +21,9 @@ CREATE TRIGGER tg_estudiante_BI BEFORE INSERT ON estudiantes
         IF NEW.recomendaciones = '' THEN
 			SET NEW.recomendaciones = 'SIN ESPEFICAR';
         END IF;
+        IF NEW.cedula = '' THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Exiten Algunos Datos Ambiguos o Vacios';
+        END IF;
     END $$
  DELIMITER ;
  
