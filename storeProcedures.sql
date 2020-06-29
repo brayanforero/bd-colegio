@@ -23,8 +23,8 @@ BEGIN
         (_cedula,_nombres,_apellidos,_nacimiento,_genero,_id_estado,_id_municipio, _id_parroquia, _canaina, _beca, _des_salud,_des_recomendaciones);
         SET id = (SELECT id_estudiante FROM estudiantes ORDER BY id_estudiante DESC LIMIT 1);
         INSERT INTO telefonos_de_estudiantes (id_estudiante, telefono) VALUE (id, _momPhone),(id, _dadPhone);
-        SELECT id;
 	COMMIT;
+    SELECT id;
 END $$
 DELIMITER ;
 
