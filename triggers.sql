@@ -245,3 +245,14 @@ FOR EACH ROW BEGIN
 END$$
 -- #########GRADOS#################
 DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS tg_inscripciones_AI;
+DELIMITER $$
+CREATE TRIGGER tg_inscripciones_AI BEFORE UPDATE ON inscripciones
+FOR EACH ROW BEGIN
+	
+    INSERT INTO historial_academico (id_estudiante, id_grado) VALUES (NEW.id_estdiante, NEW.id_grado);
+END$$
+-- #########GRADOS#################
+DELIMITER ;

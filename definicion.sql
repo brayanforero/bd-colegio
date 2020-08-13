@@ -247,6 +247,43 @@ ALTER TABLE grados ADD CONSTRAINT fk_grados_secciones FOREIGN KEY(id_seccion)
      ON UPDATE RESTRICT;
 -- ----------------------------------------------------------
 
+-- INCRIPCION
+
+DROP TABLE IF EXISTS inscripciones;
+CREATE TABLE IF NOT EXISTS inscripciones(
+	id_inscripcion INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_estudiante INT UNSIGNED NOT NULL,
+    id_grado INT UNSIGNED NOT NULL,
+    repitiente BOOLEAN NOT NULL,
+    CONSTRAINT pk_inscripciones PRIMARY KEY (id_inscripcion)
+);
+
+ALTER TABLE inscripciones ADD CONSTRAINT fk_inscripciones_estudiantes FOREIGN KEY(id_estudiante)
+     REFERENCES estudiantes(id_estudiante)
+     ON DELETE RESTRICT
+     ON UPDATE RESTRICT;
+     
+ALTER TABLE inscripciones ADD CONSTRAINT fk_inscripciones_grados FOREIGN KEY(id_grado)
+     REFERENCES grados(id_grado)
+     ON DELETE RESTRICT
+     ON UPDATE RESTRICT;
+
+DROP TABLE IF EXISTS historial_academico;
+CREATE TABLE IF NOT EXISTS historial_academico(
+	id_historia INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_estudiante INT UNSIGNED NOT NULL,
+    id_grado INT UNSIGNED NOT NULL,
+    CONSTRAINT pk_historial_academico PRIMARY KEY(id_historia)
+);
+
+ALTER TABLE historial_academico ADD CONSTRAINT fk_historial_academico_estudiantes FOREIGN KEY (id_estudiante)
+	REFERENCES estudiantes(id_estudiante)
+     ON DELETE RESTRICT
+     ON UPDATE RESTRICT;
+ALTER TABLE historial_academico ADD CONSTRAINT fk_historial_academico_grado FOREIGN KEY (id_grado)
+	REFERENCES grados(id_grado)
+     ON DELETE RESTRICT
+     ON UPDATE RESTRICT;
 -- -------------------------------
 -- TABLAS DEBILES-----------------
 -- -------------------------------
