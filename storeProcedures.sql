@@ -193,6 +193,36 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS sp_lista_estudiante_grado;
+DELIMITER $$
+CREATE PROCEDURE sp_lista_estudiante_grado(_id INT)
+BEGIN
+	
+		SELECT
+			st.id_estudiante,
+			st.cedula,
+			concat(st.nombre_nombres,' ', st.nombre_apellidos) AS nombres,
+			st.fecha_nacimiento AS nacimiento,
+			get_age_now(st.fecha_nacimiento) AS edad,
+			IF(ins.repitiente, 'SI','NO') AS repitiente,
+			st.genero,
+			IF(ST.posee_canaima, 'SI','NO') AS canaima,
+			IF(ST.posee_beca, 'SI','NO') AS beca,
+			concat(fam.nombre_nombres,' ',fam.nombre_apellidos) AS nombres_mama,
+            fam.cedula AS cedula_mama
+			FROM inscripciones AS ins
+			INNER JOIN estudiantes AS st
+				ON st.id_estudiante = ins.id_estudiante
+			
+            INNER JOIN estudiante_y_familia AS est_fam
+				ON est_fam.id_estudiante = st.id_estudiante
+			
+            INNER JOIN familiares AS fam
+				ON fam.id_familiar = est_fam.id_familiar
+		WHERE fam.tipo_familiar = 'MAMA' AND ins.id_grado = _id;
+END $$
+DELIMITER ;
+
 
 
 
