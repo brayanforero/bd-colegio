@@ -249,10 +249,10 @@ DELIMITER ;
 
 DROP TRIGGER IF EXISTS tg_inscripciones_AI;
 DELIMITER $$
-CREATE TRIGGER tg_inscripciones_AI BEFORE UPDATE ON inscripciones
+CREATE TRIGGER tg_inscripciones_AI AFTER INSERT ON inscripciones
 FOR EACH ROW BEGIN
 	
-    INSERT INTO historial_academico (id_estudiante, id_grado) VALUES (NEW.id_estdiante, NEW.id_grado);
+    INSERT INTO historial_academico (id_estudiante, id_grado) VALUES (NEW.id_estudiante, NEW.id_grado);
 END$$
 -- #########GRADOS#################
 DELIMITER ;
