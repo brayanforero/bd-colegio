@@ -162,6 +162,7 @@ BEGIN
         us.nombre,
         us.contrasena,
         us.rol,
+        ps.id_personal,
         concat(ps.nombre,' ', ps.apellido) as personal
     FROM usuarios AS us
     INNER JOIN personal AS ps
