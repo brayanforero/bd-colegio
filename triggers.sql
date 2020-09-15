@@ -175,19 +175,7 @@ FOR EACH ROW BEGIN
 	END IF;
 END $$
 DELIMITER ;
-
-DROP TRIGGER IF EXISTS tg_periodos_AI;
-DELIMITER $$
-CREATE TRIGGER tg_periodos_AI AFTER INSERT ON periodos
-FOR EACH ROW
-BEGIN
-	DECLARE matricula VARCHAR(10);
-    SET matricula = CONCAT('M',NEW.codigo);
-    
-    INSERT INTO matriculas(id_periodo, cod_matricula) VALUES (NEW.id_periodo, matricula);
-END $$
 -- #########PERIODOS#################
-DELIMITER ;
 
 -- #########PERSONAL#################
 DROP TRIGGER IF EXISTS tg_personal_BI;

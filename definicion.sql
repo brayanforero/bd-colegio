@@ -194,28 +194,12 @@ ALTER TABLE usuarios ADD CONSTRAINT fk_usuarios_personal FOREIGN KEY (id_persona
         REFERENCES personal (id_personal)
         ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- MATRICULA ---- DEPENDE DE ----> PERIODOS
-DROP TABLE IF EXISTS matriculas;
-CREATE TABLE IF NOT EXISTS matriculas(
-    id_matricula INT UNSIGNED AUTO_INCREMENT,
-    id_periodo INT UNSIGNED NOT NULL,
-    cod_matricula VARCHAR(10) NOT NULL,
-    fecha_registro DATETIME DEFAULT current_timestamp,
-
-    CONSTRAINT pk_matrucula_id PRIMARY KEY(id_matricula),
-    CONSTRAINT uk_cod_matricula UNIQUE(cod_matricula)
-);
-
-ALTER TABLE matriculas ADD CONSTRAINT fk_matriculas_periodos FOREIGN KEY(id_periodo) 
-        REFERENCES periodos(id_periodo)
-        ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 -- GRADOS
 
 DROP TABLE IF EXISTS grados;
 CREATE TABLE IF NOT EXISTS grados(
 	id_grado INT UNSIGNED AUTO_INCREMENT,
-    id_matricula INT UNSIGNED NOT NULL,
+    id_periodo INT UNSIGNED,
     id_personal INT UNSIGNED NOT NULL,
     id_aula SMALLINT UNSIGNED NOT NULL,
     id_seccion SMALLINT UNSIGNED NOT NULL,
@@ -231,8 +215,8 @@ ALTER TABLE grados ADD CONSTRAINT fk_grados_personal FOREIGN KEY(id_personal)
             ON DELETE RESTRICT
             ON UPDATE RESTRICT;
 
-ALTER TABLE grados ADD CONSTRAINT fk_grados_matriculas FOREIGN KEY(id_matricula)
-            REFERENCES matriculas(id_matricula)
+ALTER TABLE grados ADD CONSTRAINT fk_grados_periodos FOREIGN KEY(id_periodo)
+            REFERENCES periodos(id_periodo)
             ON DELETE RESTRICT
             ON UPDATE RESTRICT;
 
