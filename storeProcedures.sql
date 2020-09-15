@@ -136,13 +136,12 @@ BEGIN
         g.turno,
         a.id_aula,
         a.nombre AS aula,
-        mat.id_matricula,
-        mat.cod_matricula,
         ps.id_personal,
-        concat(ps.nombre,' ', ps.apellido) as personal
+        concat(ps.nombre,' ', ps.apellido) as personal,
+        per.codigo AS periodo
     FROM grados AS g
-    INNER JOIN matriculas AS mat
-			ON mat.id_matricula = g.id_matricula
+    INNER JOIN periodos AS per
+			ON per.id_periodo = g.id_grado
     INNER JOIN personal AS ps
 			ON ps.id_personal = g.id_personal
     INNER JOIN aulas AS a
@@ -183,10 +182,8 @@ BEGIN
             grd.turno,
             per.codigo AS periodo
 			FROM grados AS grd
-            INNER JOIN matriculas AS mat
-				ON mat.id_matricula = grd.id_matricula
 			INNER JOIN periodos AS per
-				ON per.id_periodo = mat.id_periodo
+				ON per.id_periodo = grd.id_periodo
 			INNER JOIN secciones AS sec
 				ON sec.id_seccion = grd.id_seccion
             WHERE id_personal = _id
