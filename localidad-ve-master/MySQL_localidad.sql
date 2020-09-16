@@ -1,13 +1,13 @@
-DROP DATABASE IF EXISTS `localidad`;
+/*DROP DATABASE IF EXISTS `localidad`;
 CREATE DATABASE IF NOT EXISTS `localidad`;
-USE `localidad`;
+USE `localidad`;*/
 
 DROP TABLE IF EXISTS `pais`;
 CREATE TABLE `pais` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del pais',
   `nombre` varchar(100) NOT NULL COMMENT 'Nombre del pais',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre paises. Desarrollado por Jose Rodriguez <josearodrigueze@gmail.com> @josearodrigueze';
+) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre paises';
 
 DROP TABLE IF EXISTS `estado`;
 CREATE TABLE `estado` (
@@ -17,7 +17,7 @@ CREATE TABLE `estado` (
   PRIMARY KEY (`id`),
   KEY `fk_estado_pais` (`pais_id`),
   CONSTRAINT `fk_estado_pais` FOREIGN KEY (`pais_id`) REFERENCES `pais` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre estados. Desarrollado por Jose Rodriguez <josearodrigueze@gmail.com> @josearodrigueze';
+) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre estados.';
 
 DROP TABLE IF EXISTS `municipio`;
 CREATE TABLE `municipio` (
@@ -27,7 +27,7 @@ CREATE TABLE `municipio` (
   PRIMARY KEY (`id`),
   KEY `fk_municipio_estado1` (`estado_id`),
   CONSTRAINT `fk_municipio_estado1` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB COMMENT='Entidad que contiene la informacion de municipios. Desarrollado por Jose Rodriguez <josearodrigueze@gmail.com> @josearodrigueze';
+) ENGINE=InnoDB COMMENT='Entidad que contiene la informacion de municipios.';
 
 DROP TABLE IF EXISTS `parroquia`;
 CREATE TABLE `parroquia` (
@@ -37,7 +37,7 @@ CREATE TABLE `parroquia` (
   PRIMARY KEY (`id`),
   KEY `fk_parroquia_municipio1` (`municipio_id`),
   CONSTRAINT `fk_parroquia_municipio1` FOREIGN KEY (`municipio_id`) REFERENCES `municipio` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre parroquias. Desarrollado por Jose Rodriguez <josearodrigueze@gmail.com> @josearodrigueze';
+) ENGINE=InnoDB COMMENT='Entidad que contiene informacion sobre parroquias.';
 
 INSERT INTO `pais` (`id`, `nombre`) VALUES (1,'Venezuela');
 INSERT INTO `estado` (`id`, `nombre`, `pais_id`) VALUES (1,'DTTO. CAPITAL',1),(2,'ANZOATEGUI',1),(3,'APURE',1),(4,'ARAGUA',1),(5,'BARINAS',1),(6,'BOLIVAR',1),(7,'CARABOBO',1),(8,'COJEDES',1),(9,'FALCON',1),(10,'GUARICO',1),(11,'LARA',1),(12,'MERIDA',1),(13,'MIRANDA',1),(14,'MONAGAS',1),(15,'NUEVA ESPARTA',1),(16,'PORTUGUESA',1),(17,'SUCRE',1),(18,'TACHIRA',1),(19,'TRUJILLO',1),(20,'YARACUY',1),(21,'ZULIA',1),(22,'AMAZONAS',1),(23,'DELTA AMACURO',1),(24,'VARGAS',1);

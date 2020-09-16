@@ -128,15 +128,15 @@ CREATE TABLE IF NOT EXISTS estudiantes(
 );
 
 ALTER TABLE estudiantes ADD CONSTRAINT fk_estudiantes_estado  FOREIGN KEY (dir_estado)
-			REFERENCES localidad.estado (id)
+			REFERENCES estado (id)
             ON DELETE RESTRICT ON UPDATE RESTRICT;
             
 ALTER TABLE estudiantes ADD CONSTRAINT fk_estudiantes_municipio  FOREIGN KEY (dir_municipio)
-			REFERENCES localidad.municipio (id)
+			REFERENCES municipio (id)
             ON DELETE RESTRICT ON UPDATE RESTRICT;
             
 ALTER TABLE estudiantes ADD CONSTRAINT fk_estudiantes_parroquia  FOREIGN KEY (dir_parroquia)
-			REFERENCES localidad.parroquia (id)
+			REFERENCES parroquia (id)
             ON DELETE RESTRICT ON UPDATE RESTRICT;
             
 -- ---------------------------------------------------------------

@@ -1,5 +1,5 @@
 -- #########ESTUDIANTES#################
-DROP PROCEDURE IF EXISTS sp_registrar_estudiante;
+/*DROP PROCEDURE IF EXISTS sp_registrar_estudiante;
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_estudiante(
  
@@ -26,7 +26,7 @@ BEGIN
 	COMMIT;
     SELECT id;
 END $$
-DELIMITER ;
+DELIMITER ;*/
 
 -- call sp_registrar_estudiante('1234','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','','1234','4321');
 
@@ -60,7 +60,7 @@ BEGIN
 END$$
 DELIMITER ;
 -- #########REPRESENTANTE#################
-DROP PROCEDURE  IF EXISTS sp_registrar_familiar;
+/*DROP PROCEDURE  IF EXISTS sp_registrar_familiar;
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_familiar(
  
@@ -87,7 +87,7 @@ BEGIN
 
 	INSERT INTO estudiante_y_familia (id_estudiante, id_familiar) VALUES (_id_estudiante, _id_familiar);
 END $$
-DELIMITER ;
+DELIMITER ;*/
 
 -- #########PERIODOS#################
 DROP PROCEDURE IF EXISTS sp_registro_periodo;
