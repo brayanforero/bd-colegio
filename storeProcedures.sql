@@ -29,7 +29,6 @@ END $$
 DELIMITER ;*/
 
 -- call sp_registrar_estudiante('1234','ROSWELL GABRIEL', 'AMESTY OSORIO', '2010-07-07', 'M',1,1,1, true, true,'','','1234','4321');
-
 DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
 DELIMITER $$
 CREATE PROCEDURE sp_consulta_estudiante(_cedula VARCHAR(15))
@@ -129,26 +128,23 @@ DROP PROCEDURE IF EXISTS sp_consulta_grados;
 DELIMITER $$
 CREATE PROCEDURE sp_consulta_grados()
 BEGIN
-
 	SELECT 
 		g.id_grado,
-        g.nivel,
-        g.turno,
-        a.id_aula,
-        a.nombre AS aula,
-        ps.id_personal,
-        concat(ps.nombre,' ', ps.apellido) as personal,
-        per.codigo AS periodo
-    FROM grados AS g
-    INNER JOIN periodos AS per
-			ON per.id_periodo = g.id_grado
-    INNER JOIN personal AS ps
-			ON ps.id_personal = g.id_personal
-    INNER JOIN aulas AS a
-			ON a.id_aula = g.id_aula;
+		g.nivel,
+		sec.letra,
+		g.turno,
+		CONCAT(prs.nombre, ' ', prs.apellido) AS docente,
+		pds.codigo AS periodo
+	FROM grados AS g
+		INNER JOIN secciones AS sec
+			ON sec.id_seccion = g.id_seccion
+		INNER JOIN personal AS prs
+			ON prs.id_personal = g.id_personal
+		INNER JOIN periodos AS pds
+			ON pds.id_periodo = g.id_periodo
+	WHERE pds.vigencia = 1;
 END$$
 DELIMITER ;
-
 -- #########LOGIN#################
 DROP PROCEDURE IF EXISTS sp_login_user;
 DELIMITER $$
