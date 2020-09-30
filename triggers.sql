@@ -169,10 +169,6 @@ FOR EACH ROW BEGIN
     IF (NEW.inicio = NEW.cierre) THEN
 			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe incongruencia en las Fechas.';
 	END IF;
-    
-    IF chequeo_vigencia() THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Existe un periodo en Vigencia.';
-	END IF;
 END $$
 DELIMITER ;
 -- #########PERIODOS#################
@@ -208,6 +204,9 @@ DELIMITER $$
 CREATE TRIGGER tg_grados_BI BEFORE INSERT ON grados
 FOR EACH ROW BEGIN
 	
+    IF posee_grados_persona(NEW.id_personal) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Persona con grado ya asiganado';
+    END IF;
     IF NEW.nivel = '' THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Nivel Academico no valido';
     END IF;

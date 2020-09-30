@@ -45,6 +45,25 @@ BEGIN
 END $$
 DELIMITER ;
 -- -----------------------
+
+
+-- VERIFICA SI UN PERIODO AUN ESTA EN VIGENCIA.
+DROP FUNCTION IF EXISTS posee_grados_persona;
+DELIMITER $$
+CREATE FUNCTION posee_grados_persona(_id INT)
+RETURNS BOOLEAN
+BEGIN
+	DECLARE _exists INT;
+    SET _exists = (SELECT COUNT(g.id_grado) AS cantidad FROM grados AS g WHERE G.id_personal = _id);
+    
+    IF _exists THEN
+		RETURN TRUE;
+    END IF;
+    
+    RETURN FALSE;
+END $$
+DELIMITER ;
+-- -----------------------
 SHOW FUNCTION STATUS;
 
 
