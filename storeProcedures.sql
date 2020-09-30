@@ -217,6 +217,34 @@ BEGIN
 END $$
 DELIMITER ;
 
+USE colegio_santa_rita;
+DROP PROCEDURE IF EXISTS sp_usuarios_activos;
+DELIMITER $$
+CREATE PROCEDURE sp_usuarios_activos()
+BEGIN
+	
+	SELECT 
+    u.id_usuario, 
+    u.nombre, CONCAT(p.nombre, ' ', p.apellido) AS persona
+    FROM usuarios AS u, personal AS p 
+    WHERE u.estado = 1 AND u.id_personal = p.id_personal;	
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS sp_usuarios_desactivos;
+DELIMITER $$
+CREATE PROCEDURE sp_usuarios_desactivos()
+BEGIN
+	
+	SELECT 
+    u.id_usuario, 
+    u.nombre, CONCAT(p.nombre, ' ', p.apellido) AS persona
+    FROM usuarios AS u, personal AS p 
+    WHERE u.estado = 0 AND u.id_personal = p.id_personal;	
+END $$
+DELIMITER ;
+
+
 
 
 
