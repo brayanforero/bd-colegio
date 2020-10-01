@@ -134,17 +134,22 @@ BEGIN
 		sec.letra,
 		g.turno,
 		CONCAT(prs.nombre, ' ', prs.apellido) AS docente,
+        a.nombre AS aula,
 		pds.codigo AS periodo
 	FROM grados AS g
 		INNER JOIN secciones AS sec
 			ON sec.id_seccion = g.id_seccion
 		INNER JOIN personal AS prs
 			ON prs.id_personal = g.id_personal
+        INNER JOIN aulas AS a
+        	ON a.id_aula = g.id_aula
 		INNER JOIN periodos AS pds
 			ON pds.id_periodo = g.id_periodo
 	WHERE pds.vigencia = 1;
 END$$
 DELIMITER ;
+
+CALL sp_consulta_grados();
 -- #########LOGIN#################
 DROP PROCEDURE IF EXISTS sp_login_user;
 DELIMITER $$
