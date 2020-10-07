@@ -54,7 +54,7 @@ CREATE FUNCTION posee_grados_persona(_id INT)
 RETURNS BOOLEAN
 BEGIN
 	DECLARE _exists INT;
-    SET _exists = (SELECT COUNT(g.id_grado) AS cantidad FROM grados AS g WHERE G.id_personal = _id);
+    SET _exists = (SELECT COUNT(g.id_grado) AS cantidad FROM grados AS g, periodos AS p WHERE g.id_personal = _id AND p.vigencia = 1 AND g.id_periodo = p.id_periodo);
     
     IF _exists THEN
 		RETURN TRUE;
