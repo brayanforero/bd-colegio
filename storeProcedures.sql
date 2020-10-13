@@ -33,7 +33,9 @@ DROP PROCEDURE IF EXISTS sp_consulta_estudiante;
 DELIMITER $$
 CREATE PROCEDURE sp_consulta_estudiante(_cedula VARCHAR(15))
 BEGIN
-	SELECT cedula, 
+	SELECT
+    est.id_estudiante,
+    est.cedula, 
     est.nombre_nombres, 
     est.nombre_apellidos, 
     est.fecha_nacimiento, 
