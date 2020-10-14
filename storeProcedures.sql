@@ -251,7 +251,39 @@ BEGIN
 END $$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS sp_historial_academico;
+DELIMITER $$
+CREATE PROCEDURE sp_historial_academico(_id INT)
+BEGIN
+	
+	SELECT 
+		h.id_historia AS id,
+        g.nivel AS grado,
+        s.letra AS seccion,
+        p.codigo AS periodo
+        FROM historial_academico AS h 
+        INNER JOIN grados AS g 
+			ON g.id_grado = h.id_grado 
+		INNER JOIN secciones AS s 
+			ON s.id_seccion = g.id_seccion 
+		INNER JOIN periodos AS p 
+			ON p.id_periodo = g.id_periodo 
+	WHERE h.id_estudiante = _id;
+END $$
+DELIMITER ;
 
-
-
-
+DROP PROCEDURE IF EXISTS sp_padres_estudiante;
+DELIMITER $$
+CREATE PROCEDURE sp_padres_estudiante(_id INT)
+BEGIN
+	
+	SELECT 
+		fam.cedula, 
+		fam.nombre_nombres AS nombres, 
+		fam.nombre_apellidos AS apellidos 
+	FROM estudiante_y_familia AS rpr 
+		INNER JOIN familiares AS fam 
+			ON fam.id_familiar = rpr.id_familiar 
+	WHERE rpr.id_estudiante = _id;
+END $$
+DELIMITER ;
