@@ -189,7 +189,7 @@ BEGIN
 				ON per.id_periodo = grd.id_periodo
 			INNER JOIN secciones AS sec
 				ON sec.id_seccion = grd.id_seccion
-            WHERE id_personal = _id
+            WHERE id_personal = _id AND per.vigencia = 1
             LIMIT 1;
 END $$
 DELIMITER ;
