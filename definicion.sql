@@ -29,15 +29,12 @@ CREATE TABLE IF NOT EXISTS periodos(
 DROP TABLE IF EXISTS secciones;
 CREATE TABLE IF NOT EXISTS secciones(
     id_seccion SMALLINT UNSIGNED AUTO_INCREMENT,
-    letra VARCHAR(1) NOT NULL,
+    letra VARCHAR(50) NOT NULL,
 
     CONSTRAINT pk_secciones PRIMARY KEY(id_seccion),
     CONSTRAINT uk_secciones UNIQUE INDEX (letra)
 );
 
-INSERT INTO secciones (letra)
-			VALUES  ('A'),('B'),('C'),('D'),('E'),
-                    ('F'),('G'),('H'),('I'),('J');
 
 -- AULAS --------------------------------------------
 DROP TABLE IF EXISTS aulas;
@@ -182,7 +179,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id_personal INT UNSIGNED NOT NULL,
     nombre VARCHAR(50) NOT NULL,
     contrasena VARCHAR(300) NOT NULL,
-    rol ENUM('ADMINSTRADOR', 'COORDINADOR', 'DOCENTE') DEFAULT 'ADMINSTRADOR',
+    rol ENUM('ADMINISTRADOR', 'COORDINADOR', 'DOCENTE') DEFAULT 'DOCENTE',
+    pregunta VARCHAR(50) NOT NULL DEFAULT 'N/A',
+    respuesta VARCHAR(50) NOT NULL DEFAULT 'N/A',
     estado BOOLEAN DEFAULT TRUE,
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     
@@ -203,8 +202,8 @@ CREATE TABLE IF NOT EXISTS grados(
     id_personal INT UNSIGNED NOT NULL,
     id_aula SMALLINT UNSIGNED NOT NULL,
     id_seccion SMALLINT UNSIGNED NOT NULL,
-    nivel VARCHAR(3) NOT NULL,
-    turno ENUM('MAÑANA', 'TARDE', 'NOCHE') DEFAULT 'MAÑANA',
+    nivel VARCHAR(50) NOT NULL,
+    turno ENUM('MATUTINO', 'DESPERTINO', 'DIURNO') DEFAULT 'MATUTINO',
 	
     CONSTRAINT pk_grados PRIMARY KEY(id_grado)
 );
