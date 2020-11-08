@@ -107,6 +107,7 @@ DROP TABLE IF EXISTS estudiantes;
 CREATE TABLE IF NOT EXISTS estudiantes(
     id_estudiante INT UNSIGNED AUTO_INCREMENT,
     cedula VARCHAR(15) NOT NULL,
+    ced_escolar VARCHAR(20) NOT NULL DEFAULT 'N/A',
     nombre_nombres VARCHAR(50) NOT NULL,
     nombre_apellidos VARCHAR(50) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
