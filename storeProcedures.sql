@@ -31,35 +31,7 @@ BEGIN
     WHERE cedula = _cedula;
 END$$
 DELIMITER ;
--- #########REPRESENTANTE#################
-/*DROP PROCEDURE  IF EXISTS sp_registrar_familiar;
-DELIMITER $$
-CREATE PROCEDURE sp_registrar_familiar(
- 
-	_cedula VARCHAR(15),_nombres VARCHAR(50), _apellidos VARCHAR(50), _naciemiento DATE,
-    _si_vive BOOLEAN, _tipo_vivienda VARCHAR(10), _tipo_familiar VARCHAR(10), _ocupacion VARCHAR(300), _religion VARCHAR(50),
-    _email VARCHAR(300)
-)
-BEGIN
-	DECLARE id  INT;
-    INSERT INTO familiares
-    (cedula, nombre_nombres, nombre_apellidos, fecha_nacimiento, si_vive, tipo_vivienda, tipo_familiar, oficio, religion,email)
-    VALUES 
-    (_cedula,_nombres, _apellidos, _naciemiento, _si_vive, _tipo_vivienda, _tipo_familiar, _ocupacion, _religion, _email);
-    SET id = (SELECT id_familiar FROM familiares ORDER BY id_familiar DESC LIMIT 1);
-    
-    SELECT id;
-END $$
-DELIMITER ;
--- #########ESTUDIANTE Y FAMILIA -- TABLAS COBINADAS#################
-DROP PROCEDURE IF EXISTS sp_registrar_est_fami;
-DELIMITER $$
-CREATE PROCEDURE sp_registrar_est_fami(_id_estudiante INT, _id_familiar INT)
-BEGIN
 
-	INSERT INTO estudiante_y_familia (id_estudiante, id_familiar) VALUES (_id_estudiante, _id_familiar);
-END $$
-DELIMITER ;*/
 
 -- #########PERIODOS#################
 DROP PROCEDURE IF EXISTS sp_registro_periodo;
@@ -104,9 +76,13 @@ BEGIN
 	SELECT 
 		g.id_grado,
 		g.nivel,
+        sec.id_seccion,
 		sec.letra,
 		g.turno,
-		CONCAT(prs.nombre, ' ', prs.apellido) AS docente,
+        prs.id_personal,
+		prs.nombre,
+        prs.apellido,
+        a.id_aula,
         a.nombre AS aula,
 		pds.codigo AS periodo
 	FROM grados AS g
